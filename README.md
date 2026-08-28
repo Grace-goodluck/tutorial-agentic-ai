@@ -93,7 +93,6 @@ You: how are you
 
 Agent: I'm doing great, thank you for asking! How can I help you today?
 
-You:   
 
 ## Possible extensions
 
