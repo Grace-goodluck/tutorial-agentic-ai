@@ -14,6 +14,10 @@ MODEL_NAME = "gemini-3.6-flash"
 # Safety limit: how many tool calls before the agent gives up.
 MAX_ITERATIONS = 10
 
+# Retry behaviour for transient API failures.
+MAX_RETRIES = 3
+RETRY_BASE_DELAY = 1.0  # seconds; doubles after each failed attempt
+
 
 def get_api_key() -> str:
     """Read the API key from the environment, failing clearly if absent."""
