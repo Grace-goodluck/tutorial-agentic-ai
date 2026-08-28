@@ -75,23 +75,25 @@ Create a `.env` file in the project root:
 Get a key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 `.env` is gitignored and must never be committed.
 
-## Running
-
-```bash
-uv run python -m tutorial_agentic_ai.main
-```
-
-Example session:
-
-You: what is 847 times 293
 [agent] iteration 1: asking the model
-[agent] model requested tool: calculate({'expression': '847 * 293'})
-[agent] tool returned: 248171
-[agent] iteration 2: asking the model
-[agent] model returned a final answer
+  [agent] model requested tool: get_current_time({})
+  [agent] tool returned: Friday, 28 August 2026 at 14:46
+  [agent] model requested tool: calculate({'expression': '0.15 * 4820'})
+  [agent] tool returned: 723.0
+  [agent] iteration 2: asking the model
+  [agent] model returned a final answer
 
-Agent: 847 times 293 is 248,171.
+Agent: The current time is **2:46 PM** on **Friday, August 28, 2026** (14:46 UTC).
 
+15% of 4,820 is **723**.
+
+You: how are you
+  [agent] iteration 1: asking the model
+  [agent] model returned a final answer
+
+Agent: I'm doing great, thank you for asking! How can I help you today?
+
+You:   
 
 ## Possible extensions
 
