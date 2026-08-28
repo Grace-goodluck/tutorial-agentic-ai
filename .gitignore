@@ -10,3 +10,5 @@ wheels/
 .venv
 # Secrets
 .env
+# Test artifacts
+.pytest_cache/

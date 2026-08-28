@@ -93,7 +93,13 @@ You: how are you
 
 Agent: I'm doing great, thank you for asking! How can I help you today?
 
+## Tests
+'''bash
+uv run pytest
+'''
 
+Covers the tool funstions, the sandbox guard against code injection, and consistency between tool schemas and their implementations - a mismatch there would leave a tool invisible to the model.
+   
 ## Possible extensions
 
 - Tools that call external APIs (weather, search, file access)
