@@ -1,11 +1,13 @@
 """The agent control loop."""
 
+import logging
+
 from google.genai import types
 
 from . import config
 from .providers.gemini import GeminiProvider
 from .tools.registry import TOOL_FUNCTIONS, TOOL_SCHEMAS
-
+logger = logging.getLogger(__name__)
 
 class Agent:
     """Runs the reason-act loop: model decides, tools execute, repeat."""
@@ -17,7 +19,7 @@ class Agent:
 
     def _log(self, message: str) -> None:
         if self.verbose:
-            print(f"  [agent] {message}")
+            logger.info(message)
 
     def run(self, user_input: str) -> str:
         """Handle one user request, looping through tool calls as needed."""

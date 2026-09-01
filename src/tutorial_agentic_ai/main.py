@@ -1,10 +1,11 @@
 """Terminal interface for the agent."""
 
+from . import config
 from .agent import Agent
-
 
 def main() -> None:
     """Run an interactive chat loop until the user exits."""
+    config.configure_logging()
     print("Agentic AI — type 'quit' to exit.\n")
 
     agent = Agent(verbose=True)

@@ -1,5 +1,6 @@
 """Central configuration for the agent application."""
 
+import logging
 import os
 from dotenv import load_dotenv
 
@@ -28,3 +29,17 @@ def get_api_key() -> str:
             "root containing: GEMINI_API_KEY=your_key_here"
         )
     return key
+
+    # Logging: INFO shows the agent's decisions, DEBUG adds full detail.
+LOG_LEVEL = "INFO"
+
+
+def configure_logging() -> None:
+    """Set up logging format and level for the whole application."""
+    logging.basicConfig(
+        level=getattr(logging, LOG_LEVEL),
+        format="%(asctime)s  %(levelname)-8s %(name)s: %(message)s",
+        datefmt="%H:%M:%S",
+    )
+    # Third-party libraries are noisy at INFO; only surface their warnings.
+    logging.getLogger("httpx").setLevel(logging.WARNING)

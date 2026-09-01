@@ -1,6 +1,8 @@
 """Gemini implementation of the ModelProvider contract."""
 
+import logging
 import time
+
 from typing import Any
 
 from google import genai
@@ -9,6 +11,8 @@ from google.genai import errors as genai_errors
 
 from .. import config
 from .base import ModelProvider
+
+logger = logging.getLogger(__name__)
 
 
 class GeminiProvider(ModelProvider):
@@ -43,10 +47,10 @@ class GeminiProvider(ModelProvider):
                 last_error = exc
                 if attempt == config.MAX_RETRIES:
                     break
-                print(
-                    f"  [provider] attempt {attempt} failed "
-                    f"({exc.code}); retrying in {delay:.0f}s"
-                )
+                logger.warning(
+                        "attempt %d failed (%s); retrying in %.0fs",
+                        attempt, exc.code, delay,
+                    )
                 time.sleep(delay)
                 delay *= 2
 
