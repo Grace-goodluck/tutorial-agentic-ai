@@ -2,6 +2,7 @@
 
 import logging
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -41,5 +42,12 @@ def configure_logging() -> None:
         format="%(asctime)s  %(levelname)-8s %(name)s: %(message)s",
         datefmt="%H:%M:%S",
     )
+
     # Third-party libraries are noisy at INFO; only surface their warnings.
     logging.getLogger("httpx").setLevel(logging.WARNING)
+
+    # Where conversation history is stored between sessions.
+DATA_DIR = Path(__file__).parent.parent.parent / "data"
+HISTORY_FILE = DATA_DIR / "history.json"
+
+

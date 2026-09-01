@@ -12,3 +12,5 @@ wheels/
 .env
 # Test artifacts
 .pytest_cache/
+# Conversation history
+data/

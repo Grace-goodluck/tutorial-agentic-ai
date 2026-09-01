@@ -9,11 +9,13 @@ def main() -> None:
     print("Agentic AI — type 'quit' to exit.\n")
 
     agent = Agent(verbose=True)
+    agent.load_history()
 
     while True:
         try:
             user_input = input("You: ").strip()
         except (EOFError, KeyboardInterrupt):
+            agent.save_history()
             print("\nGoodbye.")
             break
 
@@ -21,8 +23,14 @@ def main() -> None:
             continue
 
         if user_input.lower() in {"quit", "exit"}:
+            agent.save_history()
             print("Goodbye.")
             break
+
+        if user_input.lower() == "/clear":
+            agent.clear_history()
+            print("History cleared.\n")
+            continue    
 
         try:
             answer = agent.run(user_input)
