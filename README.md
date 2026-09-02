@@ -137,6 +137,39 @@ Covers the tool functions, the sandbox guard against code injection, and consist
 - A second provider implementation to exercise the abstraction
 - Structured logging and token-usage tracking
 
+## Web interface
+
+The agent is also exposed over HTTP. Start the server:
+
+```bash
+uv run uvicorn tutorial_agentic_ai.api:app --reload
+```
+
+Then open http://127.0.0.1:8000 for the chat page, or
+http://127.0.0.1:8000/docs for the generated API documentation.
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/` | GET | Chat page |
+| `/health` | GET | Liveness check |
+| `/chat` | POST | Send a message, receive the agent's reply |
+| `/clear` | POST | Forget the conversation |
+
+### Known limitations
+
+**Single shared agent.** The server holds one agent instance, so all
+visitors share one conversation. Correct for a local demo; a deployed
+version would need per-session state.
+
+**No Markdown rendering.** Replies are inserted with `textContent`
+rather than `innerHTML`, so model output containing HTML cannot execute
+in the browser. The tradeoff is that Markdown formatting appears as
+literal characters.
+
+**Not deployment-ready.** The API key is read from the server's
+environment, so a public deployment would let any visitor spend the
+owner's quota. Authentication or per-user keys would be required first.
+
 ## Author
 
 Grace Ihuoma Nwakama - TechByGrace
