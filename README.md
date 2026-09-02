@@ -22,14 +22,20 @@ application decides whether and how to act on it.
 
 ## Architecture
 src/tutorial_agentic_ai/
-config.py Central settings and API key loading
-providers/
-base.py Abstract contract every provider must satisfy
-gemini.py Gemini implementation
-tools/
-registry.py Tool functions and the schemas the model reads
-agent.py The reason-act loop
-main.py Terminal interface
+    config.py           Central settings, API key loading, logging setup
+    providers/
+        base.py         Abstract contract every provider must satisfy
+        gemini.py       Gemini implementation with retry logic
+    tools/
+        registry.py     Tool functions and the schemas the model reads
+    agent.py            The reason-act loop and conversation persistence
+    main.py             Terminal interface
+
+data/
+    history.json        Saved conversation (gitignored)
+
+tests/
+    test_tools.py       Unit tests for tools and registry consistency
 
 
 ### Design decisions
@@ -54,12 +60,28 @@ crashes the agent.
 operators before evaluating, since passing model output to `eval`
 unchecked is an injection risk.
 
+**Retry with exponential backoff.** Transient server errors (5xx) are
+retried up to three times with a doubling delay. Client errors (4xx) are
+not retried, since a bad key or wrong model name will fail identically on
+every attempt.
+
+**Structured logging.** The agent logs through Python's `logging` module
+rather than printing, so verbosity is controlled by a single config value
+and diagnostic output stays separate from user-facing text.
+
+**Provider-neutral persistence.** Conversation history is stored as plain
+JSON rather than pickled SDK objects, so the saved format does not depend
+on which model provider produced it. Only message text is kept — stale
+tool results from a previous session would mislead the model rather than
+help it.
+
 ## Tools
 
 | Tool | Purpose |
 |------|---------|
 | `get_current_time` | Returns the current date and time, which an LLM cannot know |
 | `calculate` | Evaluates arithmetic, which LLMs approximate rather than compute |
+| `get_weather` | Fetches live conditions for any city via Open-Meteo, with geocoding |
 
 ## Setup
 
@@ -92,6 +114,13 @@ You: how are you
   [agent] model returned a final answer
 
 Agent: I'm doing great, thank you for asking! How can I help you today?
+
+## Running 
+
+```bash
+uv run python -m tutorial_agentic_ai.main
+```
+Conversation history persists between sessions. Type `/clear` to forget it. 
 
 ## Tests
 '''bash
