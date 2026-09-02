@@ -49,5 +49,6 @@ def configure_logging() -> None:
     # Where conversation history is stored between sessions.
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
 HISTORY_FILE = DATA_DIR / "history.json"
+STATIC_DIR = Path(__file__).parent.parent.parent / "static"
 
 

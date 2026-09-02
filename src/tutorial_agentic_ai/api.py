@@ -2,7 +2,12 @@
 
 import logging
 
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import config
@@ -59,3 +64,11 @@ def clear() -> dict:
     """Forget the conversation."""
     agent.clear_history()
     return {"status": "cleared"}
+
+app.mount("/static", StaticFiles(directory=config.STATIC_DIR), name="static")
+
+
+@app.get("/")
+def index() -> FileResponse:
+    """Serve the chat page."""
+    return FileResponse(config.STATIC_DIR / "index.html")    
